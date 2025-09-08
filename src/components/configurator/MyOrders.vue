@@ -37,6 +37,7 @@
             />
           </div>
 
+
           <!-- Bouton calendrier -->
           <div class="relative">
             <button
@@ -446,6 +447,7 @@ import NavBar from '../configurator/ConfigNavbar.vue'
 import { usePanierStore } from '@/stores/PanierStores'
 import { usePanierStoreOfPacks } from '@/stores/PanierStores'
 import { watch } from 'vue'
+
 
 const hasOwnCasier = ref(false)
 const panierWaterStore = usePanierStoreOfPacks()

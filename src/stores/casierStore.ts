@@ -84,7 +84,13 @@ export const useCasierStore = defineStore('casier', () => {
       const saved = localStorage.getItem('casierProducts')
       if (saved) {
         try {
-          products.value = JSON.parse(saved)
+          const savedProducts = JSON.parse(saved) as CasierProduct[]
+          // Filtre uniquement les produits avec qty > 0, sinon du stock par défaut
+          products.value = savedProducts.filter(p => p.qty > 0)
+          if (products.value.length === 0) {
+            products.value = [...DEFAULT_PRODUCTS]
+            localStorage.removeItem('casierProducts')
+          }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
           products.value = [...DEFAULT_PRODUCTS]
