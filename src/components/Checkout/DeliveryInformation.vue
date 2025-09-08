@@ -74,33 +74,41 @@
           </div>
         </form>
         <!-- Résumé de la commande -->
-        <div
-          class="flex flex-col gap-3 px-6 py-6 rounded-md bg-gray-50 md:w-96 w-[400px] h-[308px]"
-        >
+        <div class="flex flex-col gap-3 px-6 py-6 rounded-md bg-gray-50 md:w-96 w-[400px] h-[308px]">
           <h2 class="mb-2 text-lg font-semibold">Résumé de la commande</h2>
           <ul class="mb-2 text-sm">
             <li>
               <span class="font-bold text-[#EF2D34]"> 🥤 Casier</span>
-              <span class="pl-2 text-gray-600">Coca x12, Fanta x6, Sprite x6</span>
+              <span class="pl-2 text-gray-600">
+                <!-- @vue-ignore -->
+                {{ commande?.casierItems?.map(p => p.label + ' x' + p.qty).join(', ') }}
+              </span>
             </li>
             <li>
               <span class="font-bold text-blue-600">💧 Packs</span>
-              <span class="pl-2 text-gray-600">Eau naturelle x1, Citron x1</span>
+              <span class="pl-2 text-gray-600">
+                <!-- @vue-ignore -->
+                {{ commande?.waterItems?.map(p => p.label + ' x' + p.qty).join(', ') }}
+              </span>
             </li>
           </ul>
+
           <div class="flex items-center justify-between pt-3 mt-3 border-t">
             <span class="font-medium text-gray-700">Total à payer</span>
-            <span class="text-lg font-bold text-black">28 200 FCFA</span>
+              <!-- @vue-ignore -->
+            <!-- <span class="text-lg font-bold text-black">{{ commande?.total }} FCFA</span> -->
           </div>
+
           <RouterLink to="OrderConfirmation">
-            
-              <button
-                class="w-full mt-4 bg-[#F11123] text-white rounded-full py-3  hover:bg-red-600"
-              >
-                Valiser ma commande
-              </button>
+            <button class="w-full mt-4 bg-[#F11123] text-white rounded-full py-3 hover:bg-red-600">
+              Valider ma commande
+            </button>
           </RouterLink>
-          <button class="w-full pb-0 mt-2 text-sm text-gray-700 underline hover:text-red-500">
+
+          <button
+            class="w-full pb-0 mt-2 text-sm text-gray-700 underline hover:text-red-500"
+            @click="$router.back()"
+          >
             Retourner au panier
           </button>
         </div>
@@ -112,6 +120,12 @@
 <script setup lang="ts">
 import NavBar from '@/components/configurator/ConfigNavbar.vue'
 import { RouterLink } from 'vue-router';
+import { usePanierStore } from '@/stores/PanierStores'
+const panierStore = usePanierStore()
 
+// Récupération de la commande sélectionnée
+const commande = panierStore.commandeSelectionnee
 // Script logic can be filled here (form handling, etc.)
+
+
 </script>

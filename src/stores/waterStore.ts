@@ -13,7 +13,7 @@ export type WaterProduct = {
 
 const DEFAULT_WATERS: WaterProduct[] = [
   {
-    id: 'celeste-15',
+    id: 'celeste-15h',
     label: 'Céleste Naturelle 1.5L',
     img: new URL('../assets/EauMinerales/cel 1.5L.png', import.meta.url).href,
     volume: '1.5L',
@@ -52,6 +52,24 @@ const DEFAULT_WATERS: WaterProduct[] = [
     id: 'cristaline-15',
     label: 'Cristaline 1.5L',
     img: new URL('../assets/EauMinerales/cel 1.5L.png', import.meta.url).href,
+    volume: '1.5L',
+    price: 250,
+    qty: 0,
+    type: 'water',
+  },
+  {
+    id: 'celeste-0.33j',
+    label: 'Cristaline 1.5L',
+    img: new URL('../assets/EauMinerales/cel 0.33L.png', import.meta.url).href,
+    volume: '1.5L',
+    price: 250,
+    qty: 0,
+    type: 'water',
+  },
+  {
+    id: 'celeste-0.33',
+    label: 'Cristaline 1.5L',
+    img: new URL('../assets/EauMinerales/cel 0.33L.png', import.meta.url).href,
     volume: '1.5L',
     price: 250,
     qty: 0,
@@ -115,6 +133,12 @@ export const useWaterStore = defineStore('water', () => {
     localStorage.setItem('waterProducts', JSON.stringify(products.value))
   }
 
+function clearWaterProductsStorage() {
+  localStorage.removeItem('waterProducts')
+  products.value = [...DEFAULT_WATERS]  
+}
+
+
   return {
     products,
     selectedProducts,
@@ -124,5 +148,6 @@ export const useWaterStore = defineStore('water', () => {
     decrement,
     reset,
     save,
+    clearWaterProductsStorage,
   }
 })

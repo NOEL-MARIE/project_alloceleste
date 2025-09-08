@@ -14,7 +14,7 @@ export type CasierProduit = {
 
 export const usePanierStore = defineStore('panier', () => {
   const casiers = ref<CasierProduit[]>([])
-
+  const commandeSelectionnee = ref(null)
   // Hydratation depuis localStorage au montage
   onMounted(() => {
     if (typeof window !== 'undefined') {
@@ -26,7 +26,7 @@ export const usePanierStore = defineStore('panier', () => {
           casiers.value = []
         }
       }
-}
+    }
   })
 
   // Persistance automatique dans localStorage lors de toute modification
@@ -37,19 +37,16 @@ export const usePanierStore = defineStore('panier', () => {
         localStorage.setItem('panierCasiers', JSON.stringify(newVal))
       }
     },
-    { deep: true }
+    { deep: true },
   )
 
-  const totalCasiers = computed(() =>
-    casiers.value.reduce((sum, casier) => sum + casier.qty, 0)
-  )
+  const totalCasiers = computed(() => casiers.value.reduce((sum, casier) => sum + casier.qty, 0))
 
   const totalBouteilles = computed(() =>
     casiers.value.reduce(
-      (sum, casier) =>
-        sum + casier.products.reduce((sumP, p) => sumP + p.qty * casier.qty, 0),
-      0
-    )
+      (sum, casier) => sum + casier.products.reduce((sumP, p) => sumP + p.qty * casier.qty, 0),
+      0,
+    ),
   )
 
   function ajouterCasier(products: CasierProduct[], qty: number, label: string) {
@@ -65,9 +62,15 @@ export const usePanierStore = defineStore('panier', () => {
   function supprimerCasier(id: string) {
     casiers.value = casiers.value.filter((c) => c.id !== id)
   }
+  function supprimerPack(id: string) {
+    casiers.value = casiers.value.filter((c) => c.id !== id)
+  }
 
   function viderPanier() {
     casiers.value = []
+  }
+  function setCommandeSelectionnee(commande) {
+    commandeSelectionnee.value = commande
   }
 
   return {
@@ -76,7 +79,10 @@ export const usePanierStore = defineStore('panier', () => {
     totalBouteilles,
     ajouterCasier,
     supprimerCasier,
+    supprimerPack,
     viderPanier,
+    commandeSelectionnee,
+    setCommandeSelectionnee,
   }
 })
 
@@ -87,14 +93,14 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
   // Hydratation depuis localStorage, ajoutez la récupération waterPacks
   onMounted(() => {
     if (typeof window !== 'undefined') {
-      const savedCasier = localStorage.getItem('panierCasiers')
-      if (savedCasier) {
-        try {
-          casiers.value = JSON.parse(savedCasier)
-        } catch {
-          casiers.value = []
-        }
-      }
+      // const savedCasier = localStorage.getItem('panierWaterPacks')
+      // if (savedCasier) {
+      //   try {
+      //     casiers.value = JSON.parse(savedCasier)
+      //   } catch {
+      //     casiers.value = []
+      //   }
+      // }
       const savedWater = localStorage.getItem('panierWaterPacks')
       if (savedWater) {
         try {
@@ -114,7 +120,7 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
         localStorage.setItem('panierCasiers', JSON.stringify(newVal))
       }
     },
-    { deep: true }
+    { deep: true },
   )
   watch(
     waterPacks,
@@ -123,7 +129,7 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
         localStorage.setItem('panierWaterPacks', JSON.stringify(newVal))
       }
     },
-    { deep: true }
+    { deep: true },
   )
 
   // --- Fonctions existantes pour casiers ---
@@ -132,7 +138,7 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
 
   function ajouterWaterPack(product: WaterProduct) {
     // Cherche si le produit est déjà dans le panier
-    const index = waterPacks.value.findIndex(p => p.id === product.id)
+    const index = waterPacks.value.findIndex((p) => p.id === product.id)
     if (index !== -1) {
       // incrémente la quantité existante
       waterPacks.value[index].qty += 1
@@ -143,7 +149,7 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
   }
 
   function modifierWaterPackQty(productId: string, newQty: number) {
-    const index = waterPacks.value.findIndex(p => p.id === productId)
+    const index = waterPacks.value.findIndex((p) => p.id === productId)
     if (index !== -1) {
       if (newQty <= 0) {
         waterPacks.value.splice(index, 1)
@@ -154,7 +160,7 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
   }
 
   function supprimerWaterPack(productId: string) {
-    waterPacks.value = waterPacks.value.filter(p => p.id !== productId)
+    waterPacks.value = waterPacks.value.filter((p) => p.id !== productId)
   }
 
   function viderWaterPacks() {
@@ -163,12 +169,10 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
 
   // --- Computed totals des packs d'eau ---
 
-  const totalWaterPacks = computed(() =>
-    waterPacks.value.reduce((sum, p) => sum + p.qty, 0)
-  )
+  const totalWaterPacks = computed(() => waterPacks.value.reduce((sum, p) => sum + p.qty, 0))
 
   const subtotalWater = computed(() =>
-    waterPacks.value.reduce((sum, p) => sum + p.qty * p.price, 0)
+    waterPacks.value.reduce((sum, p) => sum + p.qty * p.price, 0),
   )
 
   // Retour des données et fonctions ajoutées
@@ -177,9 +181,8 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
     casiers,
     totalCasiers: computed(() => casiers.value.reduce((sum, c) => sum + c.qty, 0)),
     totalBouteilles: computed(() =>
-      casiers.value.reduce((sum, c) => sum + c.products.reduce((s, p) => s + p.qty * c.qty, 0), 0)
+      casiers.value.reduce((sum, c) => sum + c.products.reduce((s, p) => s + p.qty * c.qty, 0), 0),
     ),
-
 
     // ajout packs d'eau
     waterPacks,

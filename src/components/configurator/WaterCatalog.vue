@@ -26,7 +26,7 @@
                   class="flex items-center justify-between relative w-[298px] h-[40px] bg-[#f3f4f6] rounded-full px-1.5 min-h-[48px]"
                 >
                   <!-- Bouton 'J'achète' si qty = 0 -->
-                  <button
+                  <button 
                     v-if="product.qty === 0"
                     type="button"
                     class="flex items-center justify-between w-full gap-2 px-8 py-2 mt-8 text-base font-bold leading-tight text-white transition bg-red-600 rounded-full hover:cursor-pointer hover:bg-red-700"

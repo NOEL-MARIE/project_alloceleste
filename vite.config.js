@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
+import checker from 'vite-plugin-checker'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -13,6 +14,7 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
     svgLoader(),
+    checker({ typescript: { enabled: false }, eslint: { enabled: false } })
   ],
   resolve: {
     alias: {

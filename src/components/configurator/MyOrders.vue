@@ -174,15 +174,15 @@
           >
             <div>
               <p class="flex items-center text-lg font-bold">
-                <span class="mr-2 text-gray-700 material-icons">event_note</span>
+                <span class="mr-2 text-gray-700 material-icons">🗓️ </span>
                 Commande du {{ commande.date }}
               </p>
               <div class="mt-2">
-                <span class="font-bold text-red-600">Casier:</span>
+                <span class="font-bold text-red-600">🥤 Casier:</span>
                 <span>{{ commande.casier }}</span>
               </div>
               <div v-if="commande.packs" class="mt-2">
-                <span class="font-bold text-blue-600">Packs:</span>
+                <span class="font-bold text-blue-600">💧 Packs:</span>
                 <span>{{ commande.packs }}</span>
               </div>
             </div>
@@ -306,25 +306,6 @@
                 </div>
               </div>
 
-              <div
-                class="p-4 mb-4 border rounded-lg h-[150px]"
-                v-if="selectedCommande.casierItems?.length"
-              >
-                <div class="flex items-start justify-between mb-2">
-                  <div>
-                    <div class="font-bold">Casier</div>
-                    <div class="text-gray-700">
-                      <div
-                        v-for="(item, idx) in selectedCommande.casierItems"
-                        :key="'casier-' + idx"
-                      >
-                        {{ item.label }}: {{ item.qty }} bouteilles
-                      </div>
-                    </div>
-                  </div>
-                  <div class="font-bold">{{ selectedCommande.casierTotal }} FCFA</div>
-                </div>
-              </div>
 
               <!-- Packs -->
               <div
@@ -416,7 +397,7 @@
 
             <!-- Bouton Finaliser -->
             <div class="pb-4">
-              <RouterLink to="/DeliveryInformation">
+              <RouterLink to="/DeliveryInformation" @click.prevent="finaliserCommande">
                 <button
                   :class="{
                     'bg-red-600 text-white cursor-pointer': selectedCommande.total >= 5000,
@@ -448,6 +429,10 @@ import { usePanierStore } from '@/stores/PanierStores'
 import { usePanierStoreOfPacks } from '@/stores/PanierStores'
 import { watch } from 'vue'
 
+function finaliserCommande() {
+  panierStore.setCommandeSelectionnee(selectedCommande.value)
+  router.push('/DeliveryInformation')
+}
 
 const hasOwnCasier = ref(false)
 const panierWaterStore = usePanierStoreOfPacks()
@@ -549,7 +534,7 @@ selectedCommande.value = {
 
 const isDrawerOpen = ref(false)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function openDrawerCommande(commande: any) {
   const casierItems = panierStore.casiers.find((c) => c.id === commande.id)?.products || []
   const waterItems = panierWaterStore.waterPacks
