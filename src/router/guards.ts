@@ -5,12 +5,18 @@ function isAuthenticated() {
   return !!localStorage.getItem('auth_token')
 }
 
-const protectedRoutes = ['configurator', 'myorders', 'CasierComplet', 'OrderConfirmation', 'DeliveryInformation']
+const protectedRoutes = [
+  'configurator',
+  'myorders',
+  'CasierComplet',
+  'OrderConfirmation',
+  'DeliveryInformation',
+]
 
 export function authGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) {
   if (to.name && protectedRoutes.includes(to.name.toString())) {
     if (!isAuthenticated()) {

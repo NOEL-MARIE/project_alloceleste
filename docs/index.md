@@ -93,3 +93,50 @@ Notes de bas de page et Table des matières (via configuration VitePress ou Mark
 
 Directives Markdown étendues ou plugins pour enrichir encore plus votre documentation (exemple : diagrammes, tableaux dynamiques).
 
+````
+^ → début de la chaîne (on vérifie depuis le premier caractère).
+
+[A-Za-zÀ-ÖØ-öø-ÿ\s] → autorise uniquement :
+
+les lettres A-Z majuscules et a-z minuscules
+
+les lettres accentuées de À à ÿ (utile pour le français et d’autres langues latines)
+
+\s → les espaces (pour permettre les prénoms composés comme Jean Pierre)
+
+{3,} → il faut au moins 3 caractères valides (pas de limite max).
+
+$ → fin de la chaîne (on s’assure que toute la valeur respecte la règle).
+
+.test(name.value) → vérifie si la valeur name.value respecte la regex (retourne true ou false).
+````
+
+
+
+
+
+````
+````
+
+POUR LESEMAIS
+````
+^ → début de la chaîne.
+
+[^\s@]+ →
+
+^ à l’intérieur des crochets signifie "tout sauf"
+
+donc [^\s@]+ = un ou plusieurs caractères qui ne sont ni des espaces (\s) ni le symbole @
+
+ça correspond à la partie avant le @ dans un email.
+
+@ → il doit y avoir exactement un symbole @.
+
+[^\s@]+ → la partie après le @ et avant le point (.), donc le nom de domaine (ex: gmail).
+
+\. → un point littéral (le . doit être écrit \. dans la regex pour ne pas signifier "n'importe quel caractère").
+
+[^\s@]+ → la fin du domaine, ex: com, net, org.
+
+$ → fin de la chaîne (on s’assure que tout l’email est conforme).
+````

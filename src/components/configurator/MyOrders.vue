@@ -191,10 +191,7 @@
               </div>
             </div>
             <div class="flex gap-3 mt-6">
-              <button
-                @click="openDrawerCommande(commande)"
-                class="flex-1 px-5 py-2 text-white bg-red-600 rounded-full"
-              >
+              <button @click="openDrawerCommande(commande); isDrawerOpen = true" class="flex-1 px-5 py-2 text-white bg-red-600 rounded-full">
                 Recommander
               </button>
 
@@ -225,9 +222,9 @@
       </div>
 
       <!-- Drawer du panier -->
-      <div v-for="(commande, idx) in filteredCommandes" :key="idx">
+      <div  v-if="isDrawerOpen">
         <Drawer
-          v-model="isDrawerOpen"
+        v-for="(commande, idx) in filteredCommandes" :key="idx"
           class="fixed font-inter inset-0 w-[100%] z-30 flex justify-end bg-black/25"
         >
           <div
@@ -252,174 +249,189 @@
                 </svg>
               </button>
             </div>
+            <div class="flex flex-col h-[70rem] overflow-y-scroll ">
+              <!-- Casier -->
+              <div
+                v-for="(commande, idx) in filteredCommandes"
+                :key="idx"
+                class="flex flex-col justify-between border-[#E7E7E7] w-full max-w-full mb-7 p-6 rounded-lg shadow shadow-gray-200 bg-white h-fit"
+              >
+                <div>
+                  <p class="flex items-center justify-between text-lg font-bold">
+                    <span class="mr-2 text-black material-icons">Casier</span>
+                    <span> {{ commande.total }} FCFA </span>
+                  </p>
+                  <div class="mt-2">
+                    <div class="">
+                      <div
+                        v-for="item in commande.casierItems"
+                        :key="item.id"
+                        class="mb-1 text-gray-700 h-fit"
+                      >
+                        {{ item.label }}: {{ item.qty }} bouteilles
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <!-- Casier -->
-            <div
-              v-for="(commande, idx) in filteredCommandes"
-              :key="idx"
-              class="flex flex-col justify-between border-[#E7E7E7] mb-7 p-6 rounded-lg shadow shadow-gray-200 bg-white w-[562px] h-fit"
-            >
-              <div>
-                <p class="flex items-center justify-between text-lg font-bold">
-                  <span class="mr-2 text-black material-icons">Casier</span>
-                  <span> {{ commande.total }} FCFA </span>
-                </p>
-                <div class="mt-2">
-                  <div class="">
-                    <div
-                      v-for="item in commande.casierItems"
-                      :key="item.id"
-                      class="mb-1 text-gray-700 h-fit"
+                <div class="flex gap-3 mt-6">
+                  <button
+                    @click="modifierCasier(commande.id)"
+                    class="px-5 py-2 font-bold text-black bg-white border-2 border-black rounded-full"
+                  >
+                    Modifier le casier
+                  </button>
+
+                  <button
+                    @click="supprimerCasier(commande.id)"
+                    class="flex items-center justify-center px-3 py-2 font-bold text-center bg-white border-2 border-black rounded-full hover:cursor-pointer"
+                  >
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 18 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      {{ item.label }}: {{ item.qty }} bouteilles
-                    </div>
-                  </div>
+                      <path
+                        d="M12.3333 5.00033V4.33366C12.3333 3.40024 12.3333 2.93353 12.1517 2.57701C11.9919 2.2634 11.7369 2.00844 11.4233 1.84865C11.0668 1.66699 10.6001 1.66699 9.66667 1.66699H8.33333C7.39991 1.66699 6.9332 1.66699 6.57668 1.84865C6.26308 2.00844 6.00811 2.2634 5.84832 2.57701C5.66667 2.93353 5.66667 3.40024 5.66667 4.33366V5.00033M7.33333 9.58366V13.7503M10.6667 9.58366V13.7503M1.5 5.00033H16.5M14.8333 5.00033V14.3337C14.8333 15.7338 14.8333 16.4339 14.5608 16.9686C14.3212 17.439 13.9387 17.8215 13.4683 18.0612C12.9335 18.3337 12.2335 18.3337 10.8333 18.3337H7.16667C5.76654 18.3337 5.06647 18.3337 4.53169 18.0612C4.06129 17.8215 3.67883 17.439 3.43915 16.9686C3.16667 16.4339 3.16667 15.7338 3.16667 14.3337V5.00033"
+                        stroke="black"
+                        stroke-width="1.66667"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
-              <div class="flex gap-3 mt-6">
-                <button
-                  @click="modifierCasier(commande.id)"
-                  class="px-5 py-2 font-bold text-black bg-white border-2 border-black rounded-full"
-                >
-                  Modifier le casier
-                </button>
+              <div
+                class="p-4 mb-4 border rounded-lg h-[150px]"
+                v-if="selectedCommande.casierItems?.length"
+              >
+                <div class="flex items-start justify-between mb-2">
+                  <div>
+                    <div class="font-bold">Casier</div>
+                    <div class="text-gray-700">
+                      <div
+                        v-for="(item, idx) in selectedCommande.casierItems"
+                        :key="'casier-' + idx"
+                      >
+                        {{ item.label }}: {{ item.qty }} bouteilles
+                      </div>
+                    </div>
+                  </div>
+                  <div class="font-bold">{{ selectedCommande.casierTotal }} FCFA</div>
+                </div>
+              </div>
 
-                <button
-                  @click="supprimerCasier(commande.id)"
-                  class="flex items-center justify-center px-3 py-2 font-bold text-center bg-white border-2 border-black rounded-full hover:cursor-pointer"
-                >
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 18 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              <!-- Packs -->
+              <div
+                v-if="selectedCommande.waterItems?.length"
+                class="p-4 mb-4 border rounded-lg border-[#E7E7E7]"
+              >
+                <div class="flex items-start justify-between mb-2">
+                  <div>
+                    <div class="font-bold">Packs d'eau</div>
+                    <div class="text-gray-700">
+                      <div v-for="(item, idx) in selectedCommande.waterItems" :key="'water-' + idx">
+                        {{ item.label }}: {{ item.qty }} packs
+                      </div>
+                    </div>
+                  </div>
+                  <div class="font-bold">{{ selectedCommande.waterTotal }} FCFA</div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                  <button
+                    @click="modifierPacks(commande.id)"
+                    class="px-5 py-2 font-bold text-black bg-white border-2 border-black rounded-full"
                   >
-                    <path
-                      d="M12.3333 5.00033V4.33366C12.3333 3.40024 12.3333 2.93353 12.1517 2.57701C11.9919 2.2634 11.7369 2.00844 11.4233 1.84865C11.0668 1.66699 10.6001 1.66699 9.66667 1.66699H8.33333C7.39991 1.66699 6.9332 1.66699 6.57668 1.84865C6.26308 2.00844 6.00811 2.2634 5.84832 2.57701C5.66667 2.93353 5.66667 3.40024 5.66667 4.33366V5.00033M7.33333 9.58366V13.7503M10.6667 9.58366V13.7503M1.5 5.00033H16.5M14.8333 5.00033V14.3337C14.8333 15.7338 14.8333 16.4339 14.5608 16.9686C14.3212 17.439 13.9387 17.8215 13.4683 18.0612C12.9335 18.3337 12.2335 18.3337 10.8333 18.3337H7.16667C5.76654 18.3337 5.06647 18.3337 4.53169 18.0612C4.06129 17.8215 3.67883 17.439 3.43915 16.9686C3.16667 16.4339 3.16667 15.7338 3.16667 14.3337V5.00033"
-                      stroke="black"
-                      stroke-width="1.66667"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
+                    Modifier Mon Pack
+                  </button>
 
-            <div
-              class="p-4 mb-4 border rounded-lg h-[150px]"
-              v-if="selectedCommande.casierItems?.length"
-            >
-              <div class="flex items-start justify-between mb-2">
-                <div>
-                  <div class="font-bold">Casier</div>
-                  <div class="text-gray-700">
-                    <div v-for="(item, idx) in selectedCommande.casierItems" :key="'casier-' + idx">
-                      {{ item.label }}: {{ item.qty }} bouteilles
-                    </div>
-                  </div>
-                </div>
-                <div class="font-bold">{{ selectedCommande.casierTotal }} FCFA</div>
-              </div>
-            </div>
-
-            <!-- Packs -->
-            <div
-              v-if="selectedCommande.waterItems?.length"
-              class="p-4 mb-4 border rounded-lg border-[#E7E7E7]"
-            >
-              <div class="flex items-start justify-between mb-2">
-                <div>
-                  <div class="font-bold">Packs d'eau</div>
-                  <div class="text-gray-700">
-                    <div v-for="(item, idx) in selectedCommande.waterItems" :key="'water-' + idx">
-                      {{ item.label }}: {{ item.qty }} packs
-                    </div>
-                  </div>
-                </div>
-                <div class="font-bold">{{ selectedCommande.waterTotal }} FCFA</div>
-              </div>
-              <div class="flex gap-3 mt-6">
-                <button
-                  @click="modifierPacks(commande.id)"
-                  class="px-5 py-2 font-bold text-black bg-white border-2 border-black rounded-full"
-                >
-                  Modifier Mon Pack
-                </button>
-
-                <button
-                  @click="supprimerPacks(commande.id)"
-                  class="flex items-center justify-center px-3 py-2 font-bold text-center bg-white border-2 border-black rounded-full hover:cursor-pointer"
-                >
-                  <svg
-                    width="25"
-                    height="25"
-                    viewBox="0 0 18 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    @click="supprimerPacks(commande.id)"
+                    class="flex items-center justify-center px-3 py-2 font-bold text-center bg-white border-2 border-black rounded-full hover:cursor-pointer"
                   >
-                    <path
-                      d="M12.3333 5.00033V4.33366C12.3333 3.40024 12.3333 2.93353 12.1517 2.57701C11.9919 2.2634 11.7369 2.00844 11.4233 1.84865C11.0668 1.66699 10.6001 1.66699 9.66667 1.66699H8.33333C7.39991 1.66699 6.9332 1.66699 6.57668 1.84865C6.26308 2.00844 6.00811 2.2634 5.84832 2.57701C5.66667 2.93353 5.66667 3.40024 5.66667 4.33366V5.00033M7.33333 9.58366V13.7503M10.6667 9.58366V13.7503M1.5 5.00033H16.5M14.8333 5.00033V14.3337C14.8333 15.7338 14.8333 16.4339 14.5608 16.9686C14.3212 17.439 13.9387 17.8215 13.4683 18.0612C12.9335 18.3337 12.2335 18.3337 10.8333 18.3337H7.16667C5.76654 18.3337 5.06647 18.3337 4.53169 18.0612C4.06129 17.8215 3.67883 17.439 3.43915 16.9686C3.16667 16.4339 3.16667 15.7338 3.16667 14.3337V5.00033"
-                      stroke="black"
-                      stroke-width="1.66667"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 18 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.3333 5.00033V4.33366C12.3333 3.40024 12.3333 2.93353 12.1517 2.57701C11.9919 2.2634 11.7369 2.00844 11.4233 1.84865C11.0668 1.66699 10.6001 1.66699 9.66667 1.66699H8.33333C7.39991 1.66699 6.9332 1.66699 6.57668 1.84865C6.26308 2.00844 6.00811 2.2634 5.84832 2.57701C5.66667 2.93353 5.66667 3.40024 5.66667 4.33366V5.00033M7.33333 9.58366V13.7503M10.6667 9.58366V13.7503M1.5 5.00033H16.5M14.8333 5.00033V14.3337C14.8333 15.7338 14.8333 16.4339 14.5608 16.9686C14.3212 17.439 13.9387 17.8215 13.4683 18.0612C12.9335 18.3337 12.2335 18.3337 10.8333 18.3337H7.16667C5.76654 18.3337 5.06647 18.3337 4.53169 18.0612C4.06129 17.8215 3.67883 17.439 3.43915 16.9686C3.16667 16.4339 3.16667 15.7338 3.16667 14.3337V5.00033"
+                        stroke="black"
+                        stroke-width="1.66667"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
+            <!-- Résumé de la commande -->
+            <div class="p-4 mt-auto mb-4 rounded-lg">
+              <h3 class="mb-4 text-lg font-extrabold font-inter">Résumé de ma commande</h3>
 
-            <!-- Résumé -->
-            <div class="mt-auto mb-4">
-              <h3 class="mb-2 font-bold">Résumé de ma commande</h3>
-              <div class="flex justify-between mb-1">
-                <span>Sous-total</span>
-                <span>{{ totalAvecConsigne }} FCFA</span>
+              <div class="mb-4 space-y-3">
+                <div class="flex justify-between">
+                  <span>Sous-total</span>
+                  <span>{{ totalAvecConsigne }} FCFA</span>
+                </div>
+
+                <hr />
+                <div class="flex justify-between">
+                  <span>Consignation</span>
+                  <span>{{ selectedCommande.consignation || 2000 }} FCFA</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    v-model="selectedCommande.hasOwnCasier"
+                    id="consigne"
+                    class="w-5 h-5 transition-color cursor-pointer accent-[#F11123] checked:rounded-md checked:bg-red-600 checked:border-red-600 focus:outline-none focus:ring-2"
+                  />
+
+                  <label for="consigne" class="text-sm text-gray-700">
+                    Je possède déjà mes casiers (retirer la consigne)
+                  </label>
+                </div>
+                <hr />
+
+                <div class="flex justify-between">
+                  <span>Livraison</span>
+                  <span class="font-extrabold">Gratuite</span>
+                </div>
               </div>
-              <div class="flex justify-between mb-1">
-                <span>Consignation</span>
-                <span>{{ selectedCommande.consignation || 2000 }} FCFA</span>
-              </div>
-              <div class="flex items-center gap-2 mb-1">
-                <input
-                  type="checkbox"
-                  v-model="selectedCommande.hasOwnCasier"
-                  id="consigne"
-                  class="w-4 h-4"
-                />
-                <label for="consigne" class="text-sm text-gray-700"
-                  >Je possède déjà mes casiers (retirer la consigne)</label
-                >
-              </div>
-              <div class="flex justify-between mb-1">
-                <span>Livraison</span>
-                <span>Gratuite</span>
-              </div>
-              <div class="flex justify-between pt-2 text-lg font-bold">
+
+              <div class="flex justify-between pt-2 text-lg font-bold border-t">
                 <span>Total</span>
-                <span>{{ selectedCommande.total }} FCFA</span>
+                <span>{{ totalAvecConsigne }} FCFA</span>
               </div>
             </div>
 
             <!-- Bouton Finaliser -->
-            <RouterLink to="DeliveryInformation">
-              <button
-                :class="{
-                  'bg-red-600 text-white cursor-pointer': selectedCommande.total >= 5000,
-                  'bg-gray-200 text-gray-400 cursor-not-allowed': selectedCommande.total < 5000,
-                }"
-                class="w-full py-3 mt-4 text-lg font-bold rounded"
-                :disabled="selectedCommande.total < 5000"
-              >
-                Finaliser ma commande
-              </button>
-            </RouterLink>
-            <p v-if="selectedCommande.total < 5000" class="mt-2 text-sm text-red-600">
-              *Votre commande doit être supérieure à 5 000 FCFA pour finaliser
-            </p>
+            <div class="pb-4">
+              <RouterLink to="/DeliveryInformation">
+                <button
+                  :class="{
+                    'bg-red-600 text-white cursor-pointer': selectedCommande.total >= 5000,
+                    'bg-gray-200 text-gray-400 cursor-not-allowed': selectedCommande.total < 5000,
+                  }"
+                  class="w-full py-3 text-lg transition-colors rounded-full bg-[#F11123] text-white"
+                  :disabled="selectedCommande.total < 5000"
+                >
+                  Finaliser ma commande
+                </button>
+              </RouterLink>
+
+              <p v-if="selectedCommande.total < 5000" class="mt-2 text-sm text-red-600">
+                *Votre commande doit être supérieure à 5 000 FCFA pour finaliser
+              </p>
+            </div>
           </div>
         </Drawer>
       </div>
@@ -433,6 +445,7 @@ import { ref, computed } from 'vue'
 import NavBar from '../configurator/ConfigNavbar.vue'
 import { usePanierStore } from '@/stores/PanierStores'
 import { usePanierStoreOfPacks } from '@/stores/PanierStores'
+import { watch } from 'vue'
 
 const hasOwnCasier = ref(false)
 const panierWaterStore = usePanierStoreOfPacks()
@@ -442,12 +455,17 @@ const waterItems = panierWaterStore.waterPacks || []
 const waterTotal = waterItems.reduce((sum, p) => sum + p.price * p.qty, 0)
 
 // Exemple, selectedCommande subTotal hors consigne
-const totalAvecConsigne = computed(() => {
-  if (!selectedCommande.value?.subTotal) return 0
-  return hasOwnCasier.value
-    ? selectedCommande.value.subTotal // déduction consigne
-    : selectedCommande.value.subTotal + 2000 // ajout consigne sinon
-})
+function retirerConsigne() {
+  if (!selectedCommande.value) return 0
+
+  const casierTotal = selectedCommande.value.casierTotal || 0
+  const waterTotal = selectedCommande.value.waterTotal || 0
+  const consigne = selectedCommande.value.hasOwnCasier ? 0 : 2000
+
+  const Total = casierTotal + waterTotal + consigne
+  return Total
+}
+const totalAvecConsigne = computed(() => retirerConsigne())
 
 // Supprimer un casier du panier par id
 function supprimerCasier(id: string) {
@@ -473,8 +491,6 @@ function modifierPacks(casierId: string) {
 }
 
 const panierStore = usePanierStore()
-
-const isDrawerOpen = ref(false)
 
 const commandes = computed(() =>
   panierStore.casiers.map((casier) => {
@@ -511,7 +527,6 @@ const commandes = computed(() =>
 // logique de retour sur la tabs "casier a composer"
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 function getProductId(commande: any): string {
-  // supposons que casierItems contiennent les produits avec un id
   if (commande.casierItems && commande.casierItems.length > 0) {
     return commande.casierItems[0].id || ''
   }
@@ -522,7 +537,6 @@ import { RouterLink } from 'vue-router'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const selectedCommande = ref<any>({})
-const drawerOpen = ref(false)
 
 selectedCommande.value = {
   ...commandes,
@@ -531,9 +545,10 @@ selectedCommande.value = {
   hasOwnCasier: false,
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isDrawerOpen = ref(false)
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 function openDrawerCommande(commande: any) {
-  // Ici on simule les items casier/water, à remplacer par vos vrais produits si besoin
   const casierItems = panierStore.casiers.find((c) => c.id === commande.id)?.products || []
   const waterItems = panierWaterStore.waterPacks
 
@@ -549,13 +564,14 @@ function openDrawerCommande(commande: any) {
     waterTotal,
     subTotal,
     hasOwnCasier: false,
-    total: subTotal + 2000, // consignation par défaut
+    total: subTotal + 2000,
   }
+  isDrawerOpen.value = true;
   hasOwnCasier.value = false
-  drawerOpen.value = true
 }
+
 function closeDrawer() {
-  drawerOpen.value = true
+  isDrawerOpen.value = false
 }
 
 const searchQuery = ref('')
@@ -624,6 +640,7 @@ const isSelected = (day: number) =>
   selectedDate.value?.getDate() === day &&
   selectedDate.value?.getMonth() === currentMonth.value &&
   selectedDate.value?.getFullYear() === currentYear.value
+
 const handleDateClick = (day: number) => {
   selectDate(day)
   if (isDeliveryDay(day)) alert(`Livraison prévue le ${day} ${months[currentMonth.value]}`)
@@ -633,4 +650,11 @@ const prevMonth = () =>
 const nextMonth = () =>
   currentMonth.value === 11 ? ((currentMonth.value = 0), currentYear.value++) : currentMonth.value++
 const applyDate = () => (showDatePicker.value = false)
+
+watch(
+  () => selectedCommande.value.hasOwnCasier,
+  () => {
+    selectedCommande.value.total = retirerConsigne()
+  },
+)
 </script>

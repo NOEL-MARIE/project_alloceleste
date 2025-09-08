@@ -8,18 +8,18 @@
         class="w-[1299px] mr-[400px] md:mr-[400px] 2xl:w-[1090px]  top-0 pt-4 flex flex-col justify-center items-center"
       >
         <div
-          class="grid grid-cols-6 grid-rows-4 2xl:w-[1500px] 2xl:h-[1000px] gap-1.5 2xl:gap-5 bg-[#e62c2d] p-6 2xl:p-10 rounded-lg shadow-md relative"
+          class="grid grid-cols-6 grid-rows-4 3xl:w-[1500px] 3xl:h-[1000px] gap-1.5 2xl:gap-5 bg-[#e62c2d] p-6 2xl:p-10 rounded-lg shadow-md relative"
         >
           <div
             v-for="n in 24"
             :key="n"
-            class="w-[98px] h-[98px] 2xl:w-[190px] 2xl:h-[190px] rounded-[7px] flex items-center justify-center bg-white/25"
+            class="w-[98px] h-[98px] 3xl:w-[190px] 3xl:h-[190px] rounded-[7px] flex items-center justify-center bg-white/25"
           >
             <img
               v-if="crateBottles[n - 1]"
               :src="crateBottles[n - 1]?.cap"
               alt="bouteille"
-              class="w-[99px] rounded-full shadow 2xl:w-[150px] 2xl:h-[150px]"
+              class="w-[99px] rounded-full shadow 3xl:w-[150px] 3xl:h-[150px]"
             />
           </div>
         </div>
@@ -31,9 +31,9 @@
       </div>
 
       <!-- Bloc scrollable de configuration -->
-      <div class="fixed top-[110px] bottom-0 right-[100px]">
-        <aside class="w-[492px] md:ml-96 rounded-xl shadow-lg bg-white px-5 flex flex-col">
-          <h2 class="mb-4 text-lg font-bold text-gray-900">Je configure mon casier</h2>
+      <div class="fixed md:top-[190px] bottom-0 right-[100px]">
+        <aside class="w-[492px] h-[989px] md:ml-96 rounded-xl shadow-lg bg-white px-5 flex flex-col">
+          <h2 class="mb-4 text-xl font-bold text-gray-900">Je configure mon casier</h2>
           <div
             class="overflow-auto justify-between grow h-[560px] gap-6 grid grid-cols-2 hide-scrollbar"
           >
@@ -100,7 +100,7 @@
           </div>
 
           <!-- Résumé -->
-          <div class="flex flex-col gap-1 pt-4 mb-2 text-sm">
+          <div class="flex flex-col gap-1 pt-4 mb-2 text-lg">
             <div class="flex justify-between">
               <span class="text-gray-600">Nombre de bouteilles</span>
               <span class="font-semibold text-black">{{ store.countBottles }} / 24</span>
@@ -118,14 +118,14 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex justify-between">
+          <div class="flex justify-between text-lg">
             <button
               @click="ajouterAuPanier"
-              :disabled="store.countBottles === 0 || store.subtotal === 5000"
+              :disabled="store.countBottles === 0 || store.subtotal === 6000"
               class="flex items-center justify-between gap-2 px-4 py-2 transition-colors rounded-full h-fit disabled:opacity-50"
               :class="{
-                'text-gray-500 bg-gray-100': store.countBottles === 0 || store.subtotal < 5000,
-                'text-black bg-white hover:text-[#b0b0b0] hover:cursor-pointer hover:bg-gray-700':
+                'text-gray-500 bg-gray-100 hover:cursor-not-allowed': store.countBottles === 0 || store.subtotal < 6000,
+                'text-black bg-gray-200 hover:cursor-pointer ':
                   !(store.countBottles === 0 || store.subtotal < 5000),
               }"
             >
@@ -136,18 +136,19 @@
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
+                  color="#4f4f4f"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M1.7085 1.70801H3.37516L5.59183 12.058C5.67314 12.4371 5.88405 12.7759 6.18826 13.0162C6.49246 13.2565 6.87092 13.3833 7.2585 13.3747H15.4085C15.7878 13.3741 16.1556 13.2441 16.451 13.0062C16.7465 12.7683 16.9519 12.4368 17.0335 12.0663L18.4085 5.87467H4.26683"
-                    stroke="#b0b0b0"
+                    stroke="#4f4f4f"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
-                  <circle cx="6.67" cy="17.5" r="0.83" fill="#b0b0b0" />
-                  <circle cx="15.83" cy="17.5" r="0.83" fill="#b0b0b0" />
+                  <circle cx="6.67" cy="17.5" r="0.83" fill="#4f4f4f" />
+                  <circle cx="15.83" cy="17.5" r="0.83" fill="#4f4f4f" />
                 </svg>
               </span>
             </button>
@@ -163,24 +164,24 @@
           <!-- Notes -->
           <div class="">
             <div
-              class="relative flex items-center mt-2 text-xs text-red-500 cursor-default p- group"
+              class="relative flex items-center mt-2 text-sm text-red-500 cursor-default group"
             >
               *
               <span class="ml-1 text-black"
                 >Constituer au moins un casier ou minimum 5 000 FCFA</span
               >
               <div
-                class="absolute z-50 px-2 py-1 mb-1 text-xs text-white transform -translate-x-1/2 bg-red-500 rounded opacity-0 pointer-events-none bottom-full left-1/2 group-hover:opacity-100 whitespace-nowrap"
+                class="absolute z-50 px-2 py-1 mb-1 text-sm text-white transform -translate-x-1/2 bg-red-500 rounded opacity-0 pointer-events-none bottom-full left-1/2 group-hover:opacity-100 whitespace-nowrap"
               >
                 Minimum requis pour valider la commande
               </div>
             </div>
             <div
-              class="relative flex items-center pb-2 mt-2 text-xs text-red-500 cursor-default group"
+              class="relative flex items-center pb-2 mt-2 text-sm text-red-500 cursor-default group"
             >
               * <span class="ml-1 text-black">1 <sup>ère</sup> CONSIGNATION à 3.600 FCFA</span>
               <div
-                class="absolute z-50 px-2 py-1 mb-1 text-xs text-white transform -translate-x-1/2 bg-red-500 rounded opacity-0 pointer-events-none bottom-full left-1/2 group-hover:opacity-100 whitespace-nowrap"
+                class="absolute z-50 px-2 py-1 mb-1 text-sm text-white transform -translate-x-1/2 bg-red-500 rounded opacity-0 pointer-events-none bottom-full left-1/2 group-hover:opacity-100 whitespace-nowrap"
               >
                 C’est le prix de la première consignation
               </div>

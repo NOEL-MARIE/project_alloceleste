@@ -1,6 +1,6 @@
 <template>
-  <section class="px-4 py-20 text-white bg-black ">
-     <div class="absolute z-0 ml-[65%] mt-[10%] hidden md:block maxContainer">
+  <section class="px-4 py-20 text-white bg-black">
+    <div class="absolute z-0 ml-[65%] mt-[10%] hidden md:block maxContainer">
       <svg
         width="428"
         height="349"
@@ -16,10 +16,11 @@
       </svg>
     </div>
     <div class="relative z-10 max-w-4xl mx-auto space-y-5">
-
       <!-- Titre -->
       <div class="space-y-4 text-center">
-        <h2 class="text-3xl font-bold md:text-4xl font-TCCCUnityHeadline">Pourquoi choisir AlloCoca ?</h2>
+        <h2 class="text-3xl font-bold md:text-4xl font-TCCCUnityHeadline">
+          Pourquoi choisir AlloCoca ?
+        </h2>
         <p class="text-white font-inter">La solution la plus simple pour tes boissons</p>
       </div>
 
@@ -30,7 +31,7 @@
           :key="index"
           class="flex items-start p-6 space-x-4 text-black bg-white rounded-xl"
         >
-          <div class="text-2xl ">
+          <div class="text-2xl">
             <component :is="feature.icon" class="w-8 mb-3 text-black h-14" />
           </div>
           <div>
@@ -49,11 +50,21 @@
           Rejoins des milliers de clients satisfaits à Abidjan
         </p>
         <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <button class="px-6 py-2 text-white transition bg-red-500 rounded-full hover:bg-red-600 font-inter ">
+          <button
+            class="px-6 py-2 text-white transition bg-red-500 rounded-full hover:bg-red-600 font-inter"
+          >
             Commander maintenant
           </button>
-          <button class="px-6 py-2 text-black transition border border-black rounded-full hover:bg-gray-100 font-inter">
-            Contacter via Whatsapp
+          <button
+            class="px-6 py-2 text-black transition border border-black rounded-full hover:bg-gray-100 font-inter"
+          >
+            <a
+              href="https://wa.me/2250160242220?text=Bonjour%2C%20je%20vous%20contacte%20via%20votre%20site%20web.%20Je%20suis%20int%C3%A9ress%C3%A9%20par%20vos%20services%20et%20j%E2%80%99aimerais%20en%20savoir%20davantage.%20Pourriez-vous%20m%E2%80%99apporter%20plus%20d%E2%80%99informations%20concernant%20vos%20offres%2C%20ainsi%20que%20les%20modalit%C3%A9s%20de%20collaboration%20%3F%20Merci%20d%E2%80%99avance.
+"
+              target="_blank"
+            >
+              Contacter via Whatsapp
+            </a>
           </button>
         </div>
       </div>
