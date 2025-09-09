@@ -41,27 +41,37 @@
     </button>
 
     <!-- Icone panier -->
-    <router-link to="/Authentification">
-      <button
-        aria-label="Panier"
-        class="p-2 rounded-full border cursor-pointer border-white hover:bg-white hover:text-[#7C6E65] transition-colors ml-4"
+  <router-link to="/Authentification">
+    <button
+      @click="openDrawerCommande()"
+      aria-label="Panier"
+      class="relative p-2 ml-4 transition-colors border rounded-full cursor-pointer border-white bg-transparent hover:text-[#7C6E65]"
+    >
+      <!-- Icône Panier -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-6 h-6"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="w-6 h-6"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="9" cy="21" r="1"></circle>
-          <circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a1 1 0 0 0 .99.61h9.72a1 1 0 0 0 .98-.79l1.38-7.45H6"></path>
-        </svg>
-      </button>
-    </router-link>
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a1 1 0 0 0 .99.61h9.72a1 1 0 0 0 .98-.79l1.38-7.45H6"></path>
+      </svg>
+
+      <!-- Badge du nombre d’articles -->
+      <span
+        v-if="totalArticles > 0"
+        class="absolute px-2 py-0.5 text-xs font-bold text-white  bg-transparent rounded-lg -top-2 -right-4 "
+      >
+        {{ totalArticles }}
+      </span>
+    </button>
+  </router-link>
   </header>
 
   <!-- Menu mobile déroulant -->
@@ -79,8 +89,29 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed } from 'vue'
+import { usePanierStore, usePanierStoreOfPacks } from '../stores/PanierStores'
 
+const panierStore = usePanierStore()
+const waterStore = usePanierStoreOfPacks()
+
+// Total global
+const totalArticles = computed(() => panierStore.totalCasiers + waterStore.totalWaterPacks)
+
+// Drawer
+const drawerOpen = ref(false)
+const selectedCommande = ref({})
+
+function openDrawerCommande() {
+  selectedCommande.value = {
+    // vos données à afficher dans le drawer
+  }
+  drawerOpen.value = true
+}
+
+// Menu ou drawer (si nécessaire)
 const isMenuOpen = ref(false)
+
 const scrolled = ref(false)
 
 function handleScroll() {

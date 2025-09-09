@@ -1,16 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// src/composables/useAuth.ts
+// src/stores/auth.ts
+import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 interface User {
   name: string
   phone?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   orders: any[]
 }
 
-const user = ref<User | null>(null)
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref<User | null>(null)
 
-export function useAuth() {
+  // Charger utilisateur depuis sessionStorage au démarrage
+  function loadUser() {
+    if (typeof window !== 'undefined') {
+      const saved = sessionStorage.getItem('user')
+      if (saved) user.value = JSON.parse(saved)
+    }
+  }
+
   function login(name: string, phone?: string) {
     user.value = { name, phone, orders: [] }
     sessionStorage.setItem('user', JSON.stringify(user.value))
@@ -21,11 +30,7 @@ export function useAuth() {
     sessionStorage.removeItem('user')
   }
 
-  function loadUser() {
-    const saved = sessionStorage.getItem('user')
-    if (saved) user.value = JSON.parse(saved)
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function addOrder(order: any) {
     if (!user.value) return
     user.value.orders.push(order)
@@ -34,5 +39,8 @@ export function useAuth() {
 
   const isAuthenticated = () => user.value !== null
 
-  return { user, login, logout, loadUser, isAuthenticated, addOrder }
-}
+  // Charger l'utilisateur automatiquement (peut être appelé dans un setup global)
+  loadUser()
+
+  return { user, login, logout, loadUser, addOrder, isAuthenticated }
+})

@@ -27,22 +27,31 @@
     <button
       @click="openDrawerCommande()"
       aria-label="Panier"
-      class="p-2 rounded-full border cursor-pointer border-[#F11123] bg-[#F11123] hover:text-[#7C6E65] transition-colors ml-4"
+      class="relative p-2 ml-4 transition-colors border rounded-full cursor-pointer border-[#F11123] bg-[#F11123] hover:text-[#7C6E65]"
     >
+      <!-- Icône Panier -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
         fill="none"
         stroke="#FFFFFF"
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
         class="w-6 h-6"
-        viewBox="0 0 24 24"
       >
         <circle cx="9" cy="21" r="1"></circle>
         <circle cx="20" cy="21" r="1"></circle>
         <path d="M1 1h4l2.68 13.39a1 1 0 0 0 .99.61h9.72a1 1 0 0 0 .98-.79l1.38-7.45H6"></path>
       </svg>
+
+      <!-- Badge du nombre d’articles -->
+      <span
+        v-if="totalArticles > 0"
+        class="absolute px-2 py-0.5 text-xs font-bold text-[#F11123] border bg-white rounded-lg -top-1 -right-2 border-[#F11123]"
+      >
+        {{ totalArticles }}
+      </span>
     </button>
 
     <!-- <router-link to="/Authentification">
@@ -85,7 +94,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+
+import { usePanierStore, usePanierStoreOfPacks } from '../../stores/PanierStores'
+
+const panierStore = usePanierStore()
+const waterStore = usePanierStoreOfPacks()
+
+// On calcule le total global (casiers + packs d'eau)
+const totalArticles = computed(() => panierStore.totalCasiers + waterStore.totalWaterPacks)
 
 // for drawer
 const drawerOpen = ref(false)
@@ -100,6 +117,20 @@ function openDrawerCommande() {
 }
 
 const isMenuOpen = ref(false)
+
+console.log('Contenu du panier Casier:', panierStore.casiers)
+console.log("Contenu du panier Packs d'eau:", waterStore.waterPacks)
+
+// Vous pouvez aussi afficher le total
+console.log('Total articles:', totalArticles.value)
+
+// function computed(arg0: () => any) {
+//   throw new Error('Function not implemented.')
+// }
+
+// function computed(arg0: () => number) {
+//   throw new Error('Function not implemented.')
+// }
 </script>
 
 <style scoped>

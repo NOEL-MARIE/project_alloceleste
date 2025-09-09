@@ -434,7 +434,7 @@ function finaliserCommande() {
   router.push('/DeliveryInformation')
 }
 
-const hasOwnCasier = ref(false)
+// const hasOwnCasier = ref(false)
 const panierWaterStore = usePanierStoreOfPacks()
 // Récupérer les packs d'eau dans le panier (adapter selon structure)
 const waterItems = panierWaterStore.waterPacks || []
@@ -482,19 +482,17 @@ const panierStore = usePanierStore()
 const commandes = computed(() =>
   panierStore.casiers.map((casier) => {
     const casierDesc = casier.products
-      .filter((p) => p.qty > 0)
-      .map((p) => `${p.label} x${p.qty}`)
+      .filter(p => p.qty > 0)
+      .map(p => `${p.label} x${p.qty}`)
       .join(', ')
 
-    // Créez la description des packs d'eau présents dans le panier eau
-    const waterPacksDesc =
-      panierWaterStore.waterPacks
-        .filter((p) => p.qty > 0)
-        .map((p) => `${p.label} x${p.qty}`)
-        .join(', ') || null
+    const waterPacksDesc = panierWaterStore.waterPacks
+      .filter(p => p.qty > 0)
+      .map(p => `${p.label} x${p.qty}`)
+      .join(', ') || null
 
-    const casierTotal = casier.products.reduce((sum, p) => sum + p.qty * p.price, 0) * casier.qty
-    const waterTotal = panierWaterStore.waterPacks.reduce((sum, p) => sum + p.qty * p.price, 0)
+    const casierTotal = casier.products.reduce((sum, p) => sum + p.price * p.qty, 0) * casier.qty
+    const waterTotal = panierWaterStore.waterPacks.reduce((sum, p) => sum + p.price * p.qty, 0)
 
     return {
       id: casier.id,
@@ -502,11 +500,12 @@ const commandes = computed(() =>
       casier: casierDesc,
       packs: waterPacksDesc,
       label: casier.label,
-      total: casierTotal + waterTotal,
+      total: casierTotal + waterTotal + 2000, // consigne
       casierItems: casier.products,
       casierTotal,
       waterItems: panierWaterStore.waterPacks,
       waterTotal,
+      hasOwnCasier: false,
     }
   }),
 )
@@ -536,12 +535,12 @@ const isDrawerOpen = ref(false)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function openDrawerCommande(commande: any) {
-  const casierItems = panierStore.casiers.find((c) => c.id === commande.id)?.products || []
+  const casierItems = panierStore.casiers.find(c => c.id === commande.id)?.products || []
   const waterItems = panierWaterStore.waterPacks
 
   const casierTotal = casierItems.reduce((sum, p) => sum + p.price * p.qty, 0)
   const waterTotal = waterItems.reduce((sum, p) => sum + p.price * p.qty, 0)
-  const subTotal = casierTotal + waterTotal
+  const total = casierTotal + waterTotal + 2000 // consigne
 
   selectedCommande.value = {
     ...commande,
@@ -549,31 +548,28 @@ function openDrawerCommande(commande: any) {
     waterItems,
     casierTotal,
     waterTotal,
-    subTotal,
-    hasOwnCasier: false,
-    total: subTotal + 2000,
+    total,
+    hasOwnCasier: false
   }
-  isDrawerOpen.value = true;
-  hasOwnCasier.value = false
+  isDrawerOpen.value = true
 }
+
 
 function closeDrawer() {
   isDrawerOpen.value = false
 }
 
 const searchQuery = ref('')
+// --- Filtrage recherche ---
 const filteredCommandes = computed(() => {
   if (!searchQuery.value) return commandes.value
   const q = searchQuery.value.toLowerCase()
-  return commandes.value.filter((cmd) => {
-    const packsStr = typeof cmd.packs === 'string' ? cmd.packs : ''
-    return (
-      cmd.date.toLowerCase().includes(q) ||
-      cmd.casier.toLowerCase().includes(q) ||
-      packsStr.toLowerCase().includes(q) ||
-      cmd.total.toString().includes(q)
-    )
-  })
+  return commandes.value.filter(cmd =>
+    cmd.date.toLowerCase().includes(q) ||
+    cmd.casier.toLowerCase().includes(q) ||
+    (cmd.packs?.toLowerCase().includes(q)) ||
+    cmd.total.toString().includes(q)
+  )
 })
 
 // Date picker

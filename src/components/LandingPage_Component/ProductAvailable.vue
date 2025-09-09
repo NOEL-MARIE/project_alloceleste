@@ -7,8 +7,8 @@ import { useCasierStore, type CasierProduct } from '@/stores/casierStore'
 import { useWaterStore, type WaterProduct } from '@/stores/waterStore'
 
 // Stores panier
-import { usePanierStore } from '@/stores/PanierStores'               // celui avec ajouterCasier(...)
-import { usePanierStoreOfPacks } from '@/stores/PanierStores'        // celui avec ajouterWaterPack(...)
+import { usePanierStore } from '@/stores/PanierStores'               // pour ajouterCasier(...)
+import { usePanierStoreOfPacks } from '@/stores/PanierStores'      // pour ajouterWaterPack(...)
 
 // Onglets
 const tabs = [
@@ -22,19 +22,18 @@ const casierStore = useCasierStore()
 const waterStore  = useWaterStore()
 const panierCasier = usePanierStore()
 const panierPacks  = usePanierStoreOfPacks()
- 
-// Données produits depuis les stores
-const { products: gazeuses } = storeToRefs(casierStore) // CasierProduct[]
-const { products: waters }   = storeToRefs(waterStore)  // WaterProduct[]
 
-// Liste selon l’onglet actif
+// Données produits depuis les stores
+const { products: gazeuses } = storeToRefs(casierStore)
+const { products: waters }   = storeToRefs(waterStore)
+
+// Liste produits selon onglet actif (limité à 4 pour la grille)
 const products = computed<ReadonlyArray<CasierProduct | WaterProduct>>(() => {
   const list = activeTab.value === 'gazeuse' ? gazeuses.value : waters.value
   return list.slice(0, 4)
 })
 
-
-// Ajout au panier selon le type d’onglet
+// 🔹 Ajouter au panier
 function addToCart(product: CasierProduct | WaterProduct) {
   if (activeTab.value === 'gazeuse') {
     // Casier d'un seul parfum: 24 bouteilles
@@ -42,16 +41,28 @@ function addToCart(product: CasierProduct | WaterProduct) {
     const volume = (product as CasierProduct).volume ?? '30cl'
     panierCasier.ajouterCasier([p], 1, `Casier ${p.label} 24×${volume}`)
   } else {
-    // Pack d'eau: +1
+    // Pack d'eau: incrémenter la quantité de 1
     panierPacks.ajouterWaterPack(product as WaterProduct)
   }
 }
 
-// Pour le RouterLink
+// 🔹 Supprimer du panier
+// function removeFromCart(product: CasierProduct | WaterProduct) {
+//   if ((product as CasierProduct).type === 'casier') {
+//     panierCasier.casiers = panierCasier.casiers.filter(c => c.id !== product.id)
+//     panierCasier.save?.()
+//   } else {
+//     panierPacks.products = panierPacks.products.filter(p => p.id !== product.id)
+//     panierPacks.save?.()
+//   }
+// }
+
+// Pour le RouterLink "Voir plus"
 function getTabDestination() {
   return activeTab.value === 'gazeuse' ? 'Casiers à composer' : 'Eau Minérale'
 }
 </script>
+
 
 <template>
   <section class="w-full px-4 py-16 bg-white">
