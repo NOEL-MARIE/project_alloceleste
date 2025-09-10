@@ -122,31 +122,21 @@ export const usePanierStoreOfPacks = defineStore('panier_waters', () => {
     },
     { deep: true },
   )
-  watch(
-    waterPacks,
-    (newVal) => {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('panierWaterPacks', JSON.stringify(newVal))
-      }
-    },
-    { deep: true },
-  )
+
 
   // --- Fonctions existantes pour casiers ---
 
   // --- Nouveautés pour packs d'eau ---
 
-  function ajouterWaterPack(product: WaterProduct) {
-    // Cherche si le produit est déjà dans le panier
-    const index = waterPacks.value.findIndex((p) => p.id === product.id)
-    if (index !== -1) {
-      // incrémente la quantité existante
-      waterPacks.value[index].qty += 1
-    } else {
-      // ajoute un nouveau pack avec qty=1
-      waterPacks.value.push({ ...product, qty: 1 })
-    }
+function ajouterWaterPack(product: WaterProduct) {
+  const index = waterPacks.value.findIndex(p => p.id === product.id)
+  if (index !== -1) {
+    waterPacks.value[index].qty += 1
+  } else {
+    waterPacks.value.push({ ...product, qty: 1 })
   }
+}
+
 
   function modifierWaterPackQty(productId: string, newQty: number) {
     const index = waterPacks.value.findIndex((p) => p.id === productId)

@@ -37,33 +37,36 @@
     </button>
 
     <!-- Bouton panier (toujours visible) -->
-    <button
-      @click="openDrawerCommande()"
-      aria-label="Panier"
-      class="relative p-2 ml-4 transition-colors border rounded-full cursor-pointer border-[#F11123] bg-[#F11123] hover:text-[#7C6E65] text-white"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="w-6 h-6"
-      >
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a1 1 0 0 0 .99.61h9.72a1 1 0 0 0 .98-.79l1.38-7.45H6"></path>
-      </svg>
-
-      <span
-        v-if="totalArticles > 0"
-        class="absolute px-2 py-0.5 text-xs font-bold text-[#F11123] border bg-white rounded-lg -top-1 -right-2 border-[#F11123]"
-      >
-        {{ totalArticles }}
-      </span>
-    </button>
+     <router-link :to="{ path: '/Orders', query: { open: 'true' } }">
+      
+       <button
+         @click="openDrawerCommande()"
+         aria-label="Panier"
+         class="relative p-2 ml-4 transition-colors border rounded-full cursor-pointer border-[#F11123] bg-[#F11123] hover:text-[#7C6E65] text-white"
+       >
+         <svg
+           xmlns="http://www.w3.org/2000/svg"
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           class="w-6 h-6"
+         >
+           <circle cx="9" cy="21" r="1"></circle>
+           <circle cx="20" cy="21" r="1"></circle>
+           <path d="M1 1h4l2.68 13.39a1 1 0 0 0 .99.61h9.72a1 1 0 0 0 .98-.79l1.38-7.45H6"></path>
+         </svg>
+   
+         <span
+           v-if="totalArticles > 0"
+           class="absolute px-2 py-0.5 text-xs font-bold text-[#F11123] border bg-white rounded-lg -top-1 -right-2 border-[#F11123]"
+         >
+           {{ totalArticles }}
+         </span>
+       </button>
+    </router-link>
   </header>
 
   <!-- Menu mobile déroulant -->
@@ -84,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { usePanierStore, usePanierStoreOfPacks } from '../../stores/PanierStores'
 
 const panierStore = usePanierStore()
@@ -104,6 +107,19 @@ function openDrawerCommande() {
   }
   drawerOpen.value = true
 }
+
+
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const isDrawerOpen = ref(false)
+
+onMounted(() => {
+  if (route.query.open === 'true') {
+    isDrawerOpen.value = true
+  }
+})
+
 </script>
 
 <style scoped>

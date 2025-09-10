@@ -29,7 +29,7 @@
             <div class="-phxs">
               <div class="-phxs -pvs">
                 <form
-                  class="flex items-center justify-between relative w-full max-w-[298px] h-[40px] bg-[#f3f4f6] rounded-full px-1.5 min-h-[48px]"
+                  class="flex items-center justify-between relative w-full max-w-full  bg-[#f3f4f6] max-h-full h-full rounded-full px-1.5 min-h-[48px]"
                 >
                   <!-- Bouton 'J'achète' si qty = 0 -->
                   <button
@@ -126,6 +126,7 @@ import { usePanierStoreOfPacks } from '@/stores/PanierStores'
 const waterStore = useWaterStore()
 const panierStore = usePanierStoreOfPacks()
 
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onIncrement(product: any) {
   waterStore.increment(product) // incrémente qty dans waterStore
@@ -148,6 +149,7 @@ function onDecrement(product: any) {
     }
   }
 }
+
 </script>
 
 <style scoped>

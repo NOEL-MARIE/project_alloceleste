@@ -1,7 +1,7 @@
 <template>
   <header
     :class="scrolled ? ' bg-[#F11123]' : 'bg-transparent md:bg-transparent'"
-    class="flex items-center justify-between border-b border-gray-400 w-full px-6 py-4 text-white bg-[#F11123] md:fixed md:top-0 md:left-0 md:z-50 sm:px-10 md:px-16 transition-colors duration-300"
+    class="flex items-center justify-between border-b border-[#E7E7E74D] w-full px-6 py-4 text-white bg-[#F11123] md:fixed md:top-0 md:left-0 md:z-50 sm:px-10 md:px-16 transition-colors duration-300"
   >
     <!-- Logo -->
     <div class="text-xl font-extrabold cursor-pointer select-none">
@@ -81,7 +81,7 @@
     class="fixed left-0 right-0 z-40 flex flex-col px-6 py-6 space-y-4 text-white bg-black top-16 bg-opacity-70 backdrop-blur-md md:hidden"
   >
     <a href="#" class="text-lg hover:underline">Comment ça marche</a>
-    <router-link to="/configurator" class="text-lg hover:underline">Commander</router-link>
+    <router-link to="/configurator" class="text-lg hover:underline">Commandez</router-link>
     <a href="#" class="text-lg hover:underline">Contactez-nous</a>
   </nav>
   

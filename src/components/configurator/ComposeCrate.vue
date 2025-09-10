@@ -2,37 +2,38 @@
 <!-- eslint-disable prefer-const -->
 <template>
   <div class="md:fixed">
-    <div class="flex flex-col items-start w-screen h-screen max-h-full gap-10 pt-8 max-w-screen 2xl:justify-evenly md:maxw-w-none md:max-h-none">
+    <div class="flex flex-col items-start w-screen h-screen max-h-full gap-10 pt-8 2xl:justify-evenly max-w-screen md:maxw-w-none md:max-h-none">
+      
       <!-- Visuel du casier -->
       <div
-        class=" md:w-[1299px] w-screen max-w-screen  max-h-full mr-[400px] md:mr-[400px] 2xl:w-[1090px]  top-0 pt-4 md:flex flex-col justify-center items-center"
+        class=" md:w-[1299px] 2xl: w-screen max-w-screen  max-h-full mr-[400px] md:mr-[400px]   top-0 pt-4 md:flex flex-col justify-center items-center"
       >
         <div
-          class="grid grid-cols-6 grid-rows-4 3xl:w-[1500px]  3xl:h-[1000px] gap-1.5 2xl:gap-5 bg-[#e62c2d] p-6 2xl:p-10 rounded-lg shadow-md relative max-w-screen"
+          class="grid grid-cols-6 grid-rows-4 2xl:w-[1500px] 2xl:ml-[300px] 2xl:mb-[300px] items-center justify-center 2xl:h-[1000px] gap-1.5 2xl:gap- bg-[#e62c2d] p-6 2xl:p-10 2xl:pl-20 rounded-lg shadow-md relative max-w-screen"
         >
           <div
             v-for="n in 24"
             :key="n"
-            class="md:w-[98px] h-[98px] max-w-full w-full max-h-full  3xl:w-[190px] 3xl:h-[190px] rounded-[7px] flex items-center justify-center bg-white/25"
+            class="md:w-[98px] h-[98px] 2xl:w-[190px] 2xl:h-[190px] max-w-full w-full max-h-full  3xl:w-[190px] 3xl:h-[190px] rounded-[7px] flex items-center justify-center bg-white/25"
           >
-            <img
+            <img  
               v-if="crateBottles[n - 1]"
               :src="crateBottles[n - 1]?.cap"
               alt="bouteille"
-              class="md:w-[99px] rounded-full max-w-full  max-h-full shadow 3xl:w-[150px] 3xl:h-[150px]"
+              class="md:w-[99px] rounded-full max-w-full 2xl:w-[150px]  max-h-full shadow 3xl:w-[150px] 3xl:h-[150px]"
             />
           </div>
         </div>
         <div
-          class="font-inter flex items-center  font-bold text-[34px] mt-4 text-black "
+          class="font-inter flex items-center  font-bold text-[34px] mt-4 2xl:mt-0 text-black "
         >
           Mon Mélange Parfait <img src="@/assets/rezwar.gif" alt="" class="w-20">
         </div>
       </div>
 
       <!-- Bloc scrollable de configuration -->
-      <div class="md:fixed  md:top-[140px] md:bottom-0 md:right-[100px]  w-screen flex items-center md:justify-items-normal justify-center md:justify-none mx-4 md:mx-0 ">
-        <aside class="md:w-[492px] md:h-[789px] md:ml-[1400px] rounded-xl shadow-lg bg-white px-5 flex flex-col w-full max-w-full mb-9 md:max-w-none">
+      <div class="md:fixed  md:top-[140px] md:bottom-0 md:right-[100px] 2xl:right-[0px]  w-screen flex items-center md:justify-items-normal justify-center md:justify-none mx-4 md:mx-0 ">
+        <aside class="md:w-[492px] md:h-[789px] 2xl:w-[692px] 2xl:h-[1200px] md:ml-[1400px] rounded-xl shadow-lg bg-white px-5 flex flex-col w-full max-w-full mb-9 md:max-w-none">
           <h2 class="mb-4 text-xl font-bold text-gray-900">Je configure mon casier</h2>
           <div
             class="overflow-auto justify-between grow h-[560px] gap-6 grid grid-cols-2 hide-scrollbar"
@@ -40,38 +41,38 @@
             <div
               v-for="product in store.products"
               :key="product.id"
-              class="z-0 flex flex-col items-center p-4 m-0 h-full max-h-full md:max-h-none bg-white border border-gray-100 rounded-lg shadow-sm select-none md:w-[200px] md:h-[236px] w-full max-w-full md:max-w-none"
+              class="z-0 flex flex-col items-center p-4 m-0 h-full max-h-full md:max-h-none bg-white border border-gray-100 rounded-lg shadow-sm select-none md:w-[200px] md:h-[236px] 2xl:h-[456px] 2xl:w-[286px] w-full max-w-full md:max-w-none"
             >
               <!-- Titre -->
 
-              <h3 class="w-full max-w-full mb-3 text-sm font-bold text-black md:max-w-none">{{ product.label }}</h3>
+              <h3 class="w-full max-w-full mb-3 text-sm font-bold text-black md:max-w-none 2xl:text-xl">{{ product.label }}</h3>
 
               <div class="relative flex justify-center w-full">
                 <!-- Image bouteille -->
                 <img
                   :src="product.img"
                   alt="product label"
-                  class="object-contain md:w-20 ml-7 h-[186px] w-full max-w-full md:max-w-none"
+                  class="object-contain md:w-20 ml-7 h-[186px] 2xl:h-[416px] 2xl:w-[100px] w-full max-w-full md:max-w-none"
                   loading="lazy"
                 />
 
                 <!-- Volume + Prix -->
-                <div class="flex flex-col items-end w-full max-w-full gap-1 p-1 text-xs text-gray-500 md:max-w-none mt-14">
+                <div class="flex flex-col items-end w-full max-w-full gap-1 p-1 text-xs text-gray-500 md:max-w-none mt-14 2xl:text-xl 2xl:mt-44">
                   <span clss="w-full max-w-full md:max-w-none">{{ product.volume }}</span>
-                  <span class="w-full max-w-full text-sm font-bold text-gray-900 md:max-w-none">
+                  <span class="max-w-full text-sm font-bold text-gray-900 2xl:text-2xl md:max-w-none">
                     {{ product.price.toLocaleString() }} FCFA
                   </span>
                 </div>
 
                 <!-- Contrôle quantité -->
                 <div
-                  class="absolute bottom-6 w-full max-w-full md:max-w-none left-1/2 transform -translate-x-1/2 flex justify-between items-center bg-gray-100 rounded-full px-1 py-1.5 md:w-[176px] h-[40px] shadow"
+                  class="absolute bottom-6 2xl:bottom-30 w-full max-w-full md:max-w-none left-1/2 transform -translate-x-1/2 flex justify-between items-center bg-gray-100 rounded-full px-1 py-1.5 md:w-[176px] h-[40px] 2xl:w-[250px] shadow"
                 >
                   <!-- Bouton - -->
                   <button
                     @click="store.decrement(product)"
                     :disabled="product.qty <= 0"
-                    class="flex items-center justify-center w-8 h-8 text-xl font-bold text-gray-400 bg-white rounded-full disabled:cursor-not-allowed disabled:text-gray-300"
+                    class="flex items-center justify-center w-8 h-8 font-bold text-gray-400 bg-white rounded-full tet-xl disabled:cursor-not-allowed disabled:text-gray-300"
                     aria-label="Décrémenter quantité"
                   >
                     −
@@ -121,7 +122,7 @@
           <div class="flex items-center justify-between w-full max-w-full text-lg gap-7 md:max-w-none">
             <button
               @click="ajouterAuPanier"
-              :disabled="store.countBottles === 0 || store.subtotal === 6000"
+              :disabled="store.countBottles !== 24"
               class="flex items-center justify-between w-full max-w-full gap-2 px-4 py-2 transition-colors rounded-full md:max-w-none h-fit disabled:opacity-50"
               :class="{
                 'text-gray-500 bg-gray-100 hover:cursor-not-allowed': store.countBottles === 0 || store.subtotal < 6000,
@@ -132,9 +133,9 @@
               Ajouter au panier
               <span>
                 <!-- Icône panier -->
-                 <div class="hidden md:flex">
+                 <div class="">
                   
-                   <svg
+                   <!-- <svg
                      width="20"
                      height="20"
                      viewBox="0 0 20 20"
@@ -151,16 +152,18 @@
                      />
                      <circle cx="6.67" cy="17.5" r="0.83" fill="#4f4f4f" />
                      <circle cx="15.83" cy="17.5" r="0.83" fill="#4f4f4f" />
-                   </svg>
+                    </svg> -->
+                    <img src="../../assets/Cart.gif" alt="" class="w-8 h-8">
                  </div>
               </span>
             </button>
 
             <button
               @click="store.reset"
-              class="flex justify-center w-full max-w-full px-4 py-2 mb-4 text-white bg-red-500 rounded-full md:max-w-none hover:bg-red-600 h-fit"
+              class="flex justify-center max-w-full gap-3 px-8 py-2 text-white bg-red-500 rounded-full md:max-w-none hover:bg-red-600 h-fit"
             >
-              Réinitialiser le casier
+            <img src="../../assets/reset.gif" alt="" class="w-6 h-6">
+              Réinitialiser
             </button>
           </div>
 
@@ -192,6 +195,7 @@
           </div>
         </aside>
       </div>
+      
     </div>
   </div>
 </template>
