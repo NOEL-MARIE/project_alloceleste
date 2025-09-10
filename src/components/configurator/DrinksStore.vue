@@ -1,15 +1,15 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="app flex flex-col min-h-screen bg-[#fafafa] font-inter">
+  <div class="flex flex-col w-screen min-h-screen app font-inter max-w-screen md:max-w-none">
     <Navbar />
 
     <NavigationTabs
       :active="activeTab"
       @change="activeTab = $event"
-      class="px-4 mt-4 md:px-8"
+      class="z-50 hidden max-w-full px-4 Aw-full md:px-8 md:max-w-none"
     />
 
-    <div class="container flex-grow px-4 pb-8 md:px-8 md:pb-12">
+    <div class="container flex-grow w-full max-w-full px-4 pb-8 md:px-8 md:pb-12 md:max-w-none">
       <component :is="tabComponent" />
     </div>
   </div>
@@ -57,7 +57,7 @@ const tabComponent = computed(() => {
   flex-direction: column;
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
-  background-color: #fafafa;
+
 }
 
 /* Container responsive avec padding et margin */
