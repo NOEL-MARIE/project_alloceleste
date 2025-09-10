@@ -6,7 +6,7 @@ import DeliveryInformation from '../components/Checkout/DeliveryInformation.vue'
 import Authentification from '../components/auth/MultiStepForm.vue'
 import configurator from '../components/configurator/DrinksStore.vue'
 import CasierComplet from '../components/configurator/FullCrates.vue'
-import { authGuard } from './guards' // Import du guard
+// import { authGuard } from './guards' // Import du guard
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -27,6 +27,6 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach(authGuard)
+// router.beforeEach(authGuard)
 
 export default router

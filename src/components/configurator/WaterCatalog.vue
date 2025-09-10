@@ -1,14 +1,20 @@
 <template>
-  <div class="flex items-center justify-center w-screen font-inter">
-    <div class="flex WaterCatalogueContainer">
-      <div class="grid items-center justify-center grid-cols-4 text-black gap-x-5 gap-y-6">
+  <div class="flex justify-center w-screen px-4 font-inter sm:px-6 md:px-12">
+    <div class="w-full max-w-[1200px]">
+      <div
+        class="grid grid-cols-1 text-black sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-6"
+      >
         <div
           v-for="product in waterStore.products"
           :key="product.id"
           class="relative flex flex-col items-center p-2 text-center bg-[#F6F6F6] rounded-lg"
         >
           <!-- Image du produit -->
-          <img :src="product.img" :alt="product.label" class="h-[220px] mb-2 object-contain" />
+          <img
+            :src="product.img"
+            :alt="product.label"
+            class="h-[160px] sm:h-[180px] md:h-[220px] mb-2 object-contain"
+          />
 
           <!-- Infos produit -->
           <div class="w-full text-xs text-start">
@@ -23,13 +29,13 @@
             <div class="-phxs">
               <div class="-phxs -pvs">
                 <form
-                  class="flex items-center justify-between relative w-[298px] h-[40px] bg-[#f3f4f6] rounded-full px-1.5 min-h-[48px]"
+                  class="flex items-center justify-between relative w-full max-w-[298px] h-[40px] bg-[#f3f4f6] rounded-full px-1.5 min-h-[48px]"
                 >
                   <!-- Bouton 'J'achète' si qty = 0 -->
-                  <button 
+                  <button
                     v-if="product.qty === 0"
                     type="button"
-                    class="flex items-center justify-between w-full gap-2 px-8 py-2 mt-8 text-base font-bold leading-tight text-white transition bg-red-600 rounded-full hover:cursor-pointer hover:bg-red-700"
+                    class="flex items-center justify-center w-full gap-2 px-8 py-2 mt-8 text-base font-bold leading-tight text-white transition bg-red-600 rounded-full hover:cursor-pointer hover:bg-red-700"
                     @click="onIncrement(product)"
                     aria-label="Ajouter au panier"
                   >
@@ -46,7 +52,7 @@
                         @click="onDecrement(product)"
                         :disabled="product.qty === 0"
                         :class="[
-                          'flex  items-center justify-center w-8 h-8  font-bold rounded-full select-none border',
+                          'flex items-center justify-center w-8 h-8 font-bold rounded-full select-none border',
                           product.qty === 0
                             ? 'bg-gray-200 border-none text-gray-300 cursor-not-allowed'
                             : 'bg-white border-black hover:bg-red-700 hover:text-white cursor-pointer',
@@ -102,8 +108,6 @@
                       </button>
                     </div>
                   </template>
-
-
                 </form>
               </div>
             </div>
@@ -121,8 +125,6 @@ import { usePanierStoreOfPacks } from '@/stores/PanierStores'
 
 const waterStore = useWaterStore()
 const panierStore = usePanierStoreOfPacks()
-
-
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onIncrement(product: any) {
@@ -146,8 +148,6 @@ function onDecrement(product: any) {
     }
   }
 }
-
-
 </script>
 
 <style scoped>

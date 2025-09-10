@@ -1,19 +1,19 @@
 <template>
   <div>
     <NavBar />
-
-    <div class="h-screen p-10 text-black">
+    <div class="h-screen max-w-full p-6 mx-auto text-black md:p-10">
       <!-- Header avec titre et recherche -->
-      <div class="flex items-center justify-between mb-8 w-[1740px] mx-auto">
-        <h1 class="text-3xl font-bold font-TCCCUnityHeadline">Mes commandes</h1>
-
-        <div class="flex gap-4">
+      <div
+        class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 w-full max-w-[1740px] mx-auto gap-4"
+      >
+        <h1 class="text-2xl font-bold md:text-3xl font-TCCCUnityHeadline">Mes commandes</h1>
+        <div class="flex flex-col w-full gap-4 sm:flex-row sm:w-auto">
           <!-- Barre de recherche -->
           <div
-            class="flex items-center px-3 border rounded-md border-[#102823ec] w-[320px] h-[40px]"
+            class="flex items-center px-3 border rounded-md border-[#102823ec] w-full sm:w-[320px] h-[40px]"
           >
-            <span
-              ><svg
+            <span>
+              <svg
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"
@@ -33,19 +33,17 @@
               v-model="searchQuery"
               type="text"
               placeholder="Rechercher par date, total, casier, packs..."
-              class="w-full ml-2 bg-transparent outline-none font-inte"
+              class="w-full ml-2 bg-transparent outline-none font-inter"
             />
           </div>
-
-
           <!-- Bouton calendrier -->
-          <div class="relative">
+          <div class="relative w-full sm:w-auto">
             <button
               @click="showDatePicker = !showDatePicker"
-              class="flex items-center px-3 py-1 border font-bold font-inter border-black rounded-md h-[40px] hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-red-600"
+              class="flex items-center justify-center px-3 py-1 border font-bold font-inter border-black rounded-md h-[40px] w-full sm:w-auto hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-red-600"
             >
-              <span class="mr-2 text-gray-500 material-icons font-inter"
-                ><svg
+              <span class="mr-2 text-gray-500 material-icons font-inter">
+                <svg
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
@@ -61,9 +59,10 @@
                   />
                 </svg>
               </span>
-              {{ selectedDate ? selectedDate.toLocaleDateString('fr') : 'Date' }}
+              <span class="truncate">
+                {{ selectedDate ? selectedDate.toLocaleDateString('fr') : 'Date' }}
+              </span>
             </button>
-
             <!-- Date Picker -->
             <div
               v-if="showDatePicker"
@@ -165,12 +164,14 @@
       </div>
 
       <!-- Commandes grid -->
-      <div class="flex items-center justify-between w-[1740px] mx-auto">
-        <div class="grid grid-cols-1 gap-26 sm:grid-cols-2 md:grid-cols-3 md:w-[1740px] md:mx-auto">
+      <div class="flex justify-center w-full max-w-[1740px]  mx-auto">
+        <div
+          class="grid w-full grid-cols-1 px-4 gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:px-0"
+        >
           <div
             v-for="(commande, idx) in filteredCommandes"
             :key="idx"
-            class="flex flex-col justify-between p-6 rounded-lg shadow bg-[#F6F6F6] w-[512px] h-[266px]"
+            class="flex flex-col justify-between p-6 max-h-full h-full rounded-lg shadow bg-[#F6F6F6] w-full max-w-[512px] h-[266px] mx-auto"
           >
             <div>
               <p class="flex items-center text-lg font-bold">
@@ -188,16 +189,19 @@
             </div>
             <div class="mt-4">
               <div class="font-bold">
-                Total<br /><span class="text-xl text-gray-800">{{ commande.total }} FCFA</span>
+                Total<br />
+                <span class="text-xl text-gray-800">{{ commande.total }} FCFA</span>
               </div>
             </div>
-            <div class="flex gap-3 mt-6">
-              <button @click="openDrawerCommande(commande); isDrawerOpen = true" class="flex-1 px-5 py-2 text-white bg-red-600 rounded-full">
+            <div class="flex flex-wrap gap-3 mt-6">
+              <button
+                @click="openDrawerCommande(commande); isDrawerOpen = true"
+                class="flex-1 min-w-[120px] px-5 py-2 text-white bg-red-600 rounded-full"
+              >
                 Recommander
               </button>
-
               <RouterLink
-                class="flex items-center justify-center flex-1 px-5 py-2 text-center bg-white border border-gray-900 rounded-full"
+                class="flex items-center justify-center flex-1 min-w-[120px] px-5 py-2 text-center bg-white border border-gray-900 rounded-full"
                 :to="{
                   path: '/configurator',
                   query: { tab: 'casier', casierId: commande.id },
@@ -223,10 +227,11 @@
       </div>
 
       <!-- Drawer du panier -->
-      <div  v-if="isDrawerOpen">
+      <div v-if="isDrawerOpen">
         <Drawer
-        v-for="(commande, idx) in filteredCommandes" :key="idx"
-          class="fixed font-inter inset-0 w-[100%] z-30 flex justify-end bg-black/25"
+          v-for="(commande, idx) in filteredCommandes"
+          :key="idx"
+          class="fixed inset-0 z-30 flex justify-end w-full font-inter bg-black/25"
         >
           <div
             class="bg-white h-full w-full sm:w-[450px] md:w-[600px] shadow-lg pt-10 px-6 flex flex-col overflow-y-auto hide-scrollbar"
@@ -237,6 +242,7 @@
               <button
                 @click="closeDrawer"
                 class="mb-6 ml-auto text-2xl transition-all duration-300 hover:cursor-pointer hover:rotate-90"
+                aria-label="Fermer le panier"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -245,12 +251,27 @@
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18" stroke-width="2" stroke-linecap="round" />
-                  <line x1="6" y1="6" x2="18" y2="18" stroke-width="2" stroke-linecap="round" />
+                  <line
+                    x1="18"
+                    y1="6"
+                    x2="6"
+                    y2="18"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
             </div>
-            <div class="flex flex-col h-[70rem] overflow-y-scroll ">
+
+            <div class="flex flex-col h-[70rem] overflow-y-scroll">
               <!-- Casier -->
               <div
                 v-for="(commande, idx) in filteredCommandes"
@@ -274,18 +295,17 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="flex gap-3 mt-6">
+                <div class="flex flex-wrap gap-3 mt-6">
                   <button
                     @click="modifierCasier(commande.id)"
                     class="px-5 py-2 font-bold text-black bg-white border-2 border-black rounded-full"
                   >
                     Modifier le casier
                   </button>
-
                   <button
                     @click="supprimerCasier(commande.id)"
                     class="flex items-center justify-center px-3 py-2 font-bold text-center bg-white border-2 border-black rounded-full hover:cursor-pointer"
+                    aria-label="Supprimer le casier"
                   >
                     <svg
                       width="25"
@@ -305,7 +325,6 @@
                   </button>
                 </div>
               </div>
-
 
               <!-- Packs -->
               <div
@@ -316,24 +335,27 @@
                   <div>
                     <div class="font-bold">Packs d'eau</div>
                     <div class="text-gray-700">
-                      <div v-for="(item, idx) in selectedCommande.waterItems" :key="'water-' + idx">
+                      <div
+                        v-for="(item, idx) in selectedCommande.waterItems"
+                        :key="'water-' + idx"
+                      >
                         {{ item.label }}: {{ item.qty }} packs
                       </div>
                     </div>
                   </div>
                   <div class="font-bold">{{ selectedCommande.waterTotal }} FCFA</div>
                 </div>
-                <div class="flex gap-3 mt-6">
+                <div class="flex flex-wrap gap-3 mt-6">
                   <button
                     @click="modifierPacks(commande.id)"
                     class="px-5 py-2 font-bold text-black bg-white border-2 border-black rounded-full"
                   >
                     Modifier Mon Pack
                   </button>
-
                   <button
                     @click="supprimerPacks(commande.id)"
                     class="flex items-center justify-center px-3 py-2 font-bold text-center bg-white border-2 border-black rounded-full hover:cursor-pointer"
+                    aria-label="Supprimer les packs"
                   >
                     <svg
                       width="25"
@@ -353,66 +375,62 @@
                   </button>
                 </div>
               </div>
-            </div>
-            <!-- Résumé de la commande -->
-            <div class="p-4 mt-auto mb-4 rounded-lg">
-              <h3 class="mb-4 text-lg font-extrabold font-inter">Résumé de ma commande</h3>
 
-              <div class="mb-4 space-y-3">
-                <div class="flex justify-between">
-                  <span>Sous-total</span>
+              <!-- Résumé de la commande -->
+              <div class="p-4 mt-auto mb-4 rounded-lg">
+                <h3 class="mb-4 text-lg font-extrabold font-inter">
+                  Résumé de ma commande
+                </h3>
+                <div class="mb-4 space-y-3">
+                  <div class="flex justify-between">
+                    <span>Sous-total</span>
+                    <span>{{ totalAvecConsigne }} FCFA</span>
+                  </div>
+                  <hr />
+                  <div class="flex justify-between">
+                    <span>Consignation</span>
+                    <span>{{ selectedCommande.consignation || 2000 }} FCFA</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      v-model="selectedCommande.hasOwnCasier"
+                      id="consigne"
+                      class="w-5 h-5 transition-color cursor-pointer accent-[#F11123] checked:rounded-md checked:bg-red-600 checked:border-red-600 focus:outline-none focus:ring-2"
+                    />
+                    <label for="consigne" class="text-sm text-gray-700">
+                      Je possède déjà mes casiers (retirer la consigne)
+                    </label>
+                  </div>
+                  <hr />
+                  <div class="flex justify-between">
+                    <span>Livraison</span>
+                    <span class="font-extrabold">Gratuite</span>
+                  </div>
+                </div>
+                <div class="flex justify-between pt-2 text-lg font-bold border-t">
+                  <span>Total</span>
                   <span>{{ totalAvecConsigne }} FCFA</span>
                 </div>
-
-                <hr />
-                <div class="flex justify-between">
-                  <span>Consignation</span>
-                  <span>{{ selectedCommande.consignation || 2000 }} FCFA</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    v-model="selectedCommande.hasOwnCasier"
-                    id="consigne"
-                    class="w-5 h-5 transition-color cursor-pointer accent-[#F11123] checked:rounded-md checked:bg-red-600 checked:border-red-600 focus:outline-none focus:ring-2"
-                  />
-
-                  <label for="consigne" class="text-sm text-gray-700">
-                    Je possède déjà mes casiers (retirer la consigne)
-                  </label>
-                </div>
-                <hr />
-
-                <div class="flex justify-between">
-                  <span>Livraison</span>
-                  <span class="font-extrabold">Gratuite</span>
-                </div>
               </div>
-
-              <div class="flex justify-between pt-2 text-lg font-bold border-t">
-                <span>Total</span>
-                <span>{{ totalAvecConsigne }} FCFA</span>
+              <!-- Bouton Finaliser -->
+              <div class="pb-4">
+                <RouterLink to="/DeliveryInformation" @click.prevent="finaliserCommande">
+                  <button
+                    :class="{
+                      'bg-red-600 text-white cursor-pointer': selectedCommande.total >= 5000,
+                      'bg-gray-200 text-gray-400 cursor-not-allowed': selectedCommande.total < 5000,
+                    }"
+                    class="w-full py-3 text-lg transition-colors rounded-full"
+                    :disabled="selectedCommande.total < 5000"
+                  >
+                    Finaliser ma commande
+                  </button>
+                </RouterLink>
+                <p v-if="selectedCommande.total < 5000" class="mt-2 text-sm text-red-600">
+                  *Votre commande doit être supérieure à 5 000 FCFA pour finaliser
+                </p>
               </div>
-            </div>
-
-            <!-- Bouton Finaliser -->
-            <div class="pb-4">
-              <RouterLink to="/DeliveryInformation" @click.prevent="finaliserCommande">
-                <button
-                  :class="{
-                    'bg-red-600 text-white cursor-pointer': selectedCommande.total >= 5000,
-                    'bg-gray-200 text-gray-400 cursor-not-allowed': selectedCommande.total < 5000,
-                  }"
-                  class="w-full py-3 text-lg transition-colors rounded-full bg-[#F11123] text-white"
-                  :disabled="selectedCommande.total < 5000"
-                >
-                  Finaliser ma commande
-                </button>
-              </RouterLink>
-
-              <p v-if="selectedCommande.total < 5000" class="mt-2 text-sm text-red-600">
-                *Votre commande doit être supérieure à 5 000 FCFA pour finaliser
-              </p>
             </div>
           </div>
         </Drawer>
@@ -420,6 +438,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import router from '@/router'

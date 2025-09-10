@@ -1,16 +1,17 @@
-<!-- DeliveryInfo.vue -->
 <template>
   <div class="h-screen text-black bg-white">
     <div>
       <NavBar />
     </div>
-    <main class="flex flex-col items-center mt-24 font-inter">
-      <h1 class="flex mb-6 text-3xl font-bold text-left pr-9 font-TCCCUnityHeadline mr-96">
+    <main class="flex flex-col items-center max-w-5xl px-4 mx-auto mt-16 md:mt-24 font-inter sm:px-6 md:px-0">
+      <h1
+        class="flex mb-6 text-2xl md:text-3xl font-bold text-left font-TCCCUnityHeadline w-full md:max-w-[40rem] pr-0 md:pr-9"
+      >
         Mes informations de livraison
       </h1>
-      <div class="flex flex-col w-full max-w-4xl gap-8 md:flex-row">
+      <div class="flex flex-col w-full gap-6 md:flex-row md:gap-8">
         <!-- Formulaire d'informations -->
-        <form class="flex-1 space-y-4 bg-white rounded-md">
+        <form class="flex-1 w-full space-y-4 bg-white rounded-md md:max-w-2xl">
           <div>
             <label class="text-xs font-medium">Prénom & Nom</label>
             <div class="relative mt-1">
@@ -50,6 +51,7 @@
               class="w-full px-3 py-2 mt-1 border border-gray-300 rounded"
             />
           </div>
+
           <div>
             <label class="text-xs font-medium">Commune</label>
             <select class="w-full px-3 py-2 mt-1 border border-gray-300 rounded">
@@ -57,6 +59,7 @@
               <!-- Ajouter d'autres options ici -->
             </select>
           </div>
+
           <div>
             <label class="text-xs font-medium">Adresse de livraison</label>
             <input
@@ -65,6 +68,7 @@
               class="w-full px-3 py-2 mt-1 border border-gray-300 rounded"
             />
           </div>
+
           <div>
             <label class="text-xs font-medium">Instructions de livraison (optionnel)</label>
             <textarea
@@ -73,14 +77,15 @@
             ></textarea>
           </div>
         </form>
+
         <!-- Résumé de la commande -->
         <div
-          class="flex flex-col gap-3 px-6 py-6 rounded-md bg-gray-50 md:w-96 w-[400px] h-[308px]"
+          class="flex flex-col px-6 py-6 rounded-md bg-gray-50 w-full md:w-96 h-[308px] max-w-full md:max-w-none"
         >
           <h2 class="mb-2 text-lg font-semibold">Résumé de la commande</h2>
-          <ul class="mb-2 text-sm">
+          <ul class="mb-2 space-y-2 text-sm">
             <li>
-              <span class="font-bold text-[#EF2D34]"> 🥤 Casier</span>
+              <span class="font-bold text-[#EF2D34]">🥤 Casier</span>
               <span class="pl-2 text-gray-600">Coca x12, Fanta x6, Sprite x6</span>
             </li>
             <li>
@@ -92,15 +97,17 @@
             <span class="font-medium text-gray-700">Total à payer</span>
             <span class="text-lg font-bold text-black">28 200 FCFA</span>
           </div>
-          <RouterLink to="OrderConfirmation">
-            
-              <button
-                class="w-full mt-4 bg-[#F11123] text-white rounded-full py-3  hover:bg-red-600"
-              >
-                Valiser ma commande
-              </button>
+          <RouterLink to="OrderConfirmation" class="w-full mt-4">
+            <button
+              class="w-full bg-[#F11123] text-white rounded-full py-3 hover:bg-red-600 transition-colors"
+            >
+              Valiser ma commande
+            </button>
           </RouterLink>
-          <button class="w-full pb-0 mt-2 text-sm text-gray-700 underline hover:text-red-500">
+          <button
+            class="w-full mt-2 text-sm text-gray-700 underline hover:text-red-500"
+            @click="$router.back()"
+          >
             Retourner au panier
           </button>
         </div>
@@ -111,7 +118,7 @@
 
 <script setup lang="ts">
 import NavBar from '@/components/configurator/ConfigNavbar.vue'
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
 
-// Script logic can be filled here (form handling, etc.)
+// Tu peux continuer la logique script ici si besoin
 </script>

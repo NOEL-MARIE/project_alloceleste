@@ -5,7 +5,7 @@
     <div class="flex items-start w-screen h-screen gap-10 pt-8 2xl:justify-evenly">
       <!-- Visuel du casier -->
       <div
-        class="w-[1299px] mr-[400px] md:mr-[400px] 2xl:w-[1090px]  top-0 pt-4 flex flex-col justify-center items-center"
+        class=" hidden w-[1299px] mr-[400px] md:mr-[400px] 2xl:w-[1090px]  top-0 pt-4 md:flex flex-col justify-center items-center"
       >
         <div
           class="grid grid-cols-6 grid-rows-4 3xl:w-[1500px] 3xl:h-[1000px] gap-1.5 2xl:gap-5 bg-[#e62c2d] p-6 2xl:p-10 rounded-lg shadow-md relative"
